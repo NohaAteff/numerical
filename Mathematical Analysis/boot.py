@@ -5,23 +5,28 @@ import gaussianelimination as ge
 root = Tk()
 root.title('entry boxes')
 root.geometry('700x400')
-# my_entries = []
 myentries = []
-# m = []
+o=0
+p=0
 f = []
 n = 3
+label = Label(root)
 def ss():
     global f
     for i in range(len(myentries)):
         f.append(int(str(myentries[i].get())))
-    
-    # global my_entries     
-    # my_entries = np.reshape(np.array(f),(n,n+1))
-    # print((my_entries))
-    # m = iter(my_entries)
-    # # my_entries=np.matrix(my_entries)
-    # # print(type(my_entries))
-
+    a = ge.slice(f) 
+    global o,p
+    for i in a:
+        for j in i:
+            print(round(j,3), end = ' ')
+            q = round(j,3)
+            label = Label(root,text=q)
+            label.grid(row=8+o,column=p)
+            p+=1
+        p=0
+        o+=1
+        print()
 for i in range(n):
     for j in range(n+1):
         myentry = Entry(root)
@@ -29,16 +34,22 @@ for i in range(n):
         myentries.append(myentry)
         
 
-def g():
-    ge.slice(f) 
-    print(ge.slice(f))
-    
-        
+# def g():
+#     a = ge.slice(f) 
+#     global o
+#     for i in a:
+#         for j in i:
+#             print(round(j,3), end = ' ')
+#             q = round(j,3)
+#             label = Label(root,text=q)
+#             label.grid(row=8+o,column=0)
+#             o+=1
+#         print()
 mb = Button(root,text='click me!',command=ss)
 mb.grid(row=6,column=0)
 
-mb2 = Button(root,text='click me!',command=g)
-mb2.grid(row=7,column=0)
+# mb2 = Button(root,text='click me!',command=g)
+# mb2.grid(row=7,column=0)
 
 
 root.mainloop()

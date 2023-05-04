@@ -4,17 +4,15 @@ def slice(mat):
 
 	# list of length in which we have to split
 	length_to_split = [4,4,4]
-
 	# Using islice
 	matt = iter(mat)
 	Output = [list(islice(matt, elem))
            for elem in length_to_split]
 	gaussianElimination(Output)
+	return gaussianElimination(Output)
 # function to get matrix content
 def gaussianElimination(mat):
-
 	singular_flag = forwardElim(mat)
-
 	# if matrix is singular
 	if (singular_flag != -1):
 
@@ -27,7 +25,7 @@ def gaussianElimination(mat):
 		return
 
 	backSub(mat)
-	
+	return mat
 # function for elementary operation of swapping two rows
 def swap_row(mat, i, j):
 
@@ -50,7 +48,7 @@ def forwardElim(mat):
 			if (abs(mat[i][k]) > v_max):
 				v_max = mat[i][k]
 				i_max = i
-
+		#print(mat)
 		# if a principal diagonal element is zero,
 		# it denotes that matrix is singular, and
 		# will lead to a division-by-zero later.
@@ -60,7 +58,7 @@ def forwardElim(mat):
 		# Swap the greatest value row with current row
 		if (i_max != k):
 			swap_row(mat, k, i_max)
-
+   
 		for i in range(k + 1, N):
 
 			# factor f to set current row kth element to 0,
@@ -74,7 +72,7 @@ def forwardElim(mat):
 
 			# filling lower triangular matrix with zeros*/
 			mat[i][k] = 0
-
+	#print(mat)
 	return -1
 
 # function to calculate the values of the unknowns
