@@ -18,14 +18,7 @@ note.grid(row=0,column=0)
 tab1 = ttk.Frame(note)
 tab2 = ttk.Frame(note)
 
-#ch2
-myentries = []
-o=0
-p=0
-arr = []
 
-label = Label(tab2)
-brac = Label(tab2)
 
 iterations_lable = []
 labelx0 = Label(tab1,text="x0: ")
@@ -163,10 +156,28 @@ cb1.grid(row=2,column=3,padx=(0,10))
 button = tb.Button(tab1,text='solve',bootstyle='primary outline',command=root).grid(row=7,column=3,padx=(0,10),pady=10)
 
 #-----------------------------------------------------------------------------------------------------------------------------#
+#ch2
+myentries = []
+o=0
+p=0
+arr = []
+luarr = []
+
+label = Label(tab2)
+label2 = Label(tab2)
+labelb = Label(tab2)
+brac = Label(tab2)
 brac = Label(tab2)
 a = []
 xx = []
 
+def clear():
+    [widget.delete(0, END) for widget in myentries if isinstance(widget, Entry)]
+
+# def clearLabel():
+#     global a,xx
+#     [widget.destroy() for widget in a if isinstance(widget, Label)]
+#     [widget.destroy() for widget in xx if isinstance(widget, Label)]
 def createmat():
     global n,brac
     try:
@@ -185,33 +196,46 @@ varn = tb.Entry(tab2,bootstyle="warning")
 varn.grid(row=0,column=1,columnspan=4,pady=10)
 matbut = Button(tab2,text="Show matrix",command=createmat)
 matbut.grid(row=0,column=5,padx=10)
-
+clearbut = tb.Button(tab2,text='clear',bootstyle='primary outline',command=clear)
+clearbut.grid(row=6,column=4)
+iterappend = []
 
 def solve():
-   
-    global arr
+    global luarr,iterappend,label,label2,labelb
     global o,p
+    # clearLabel()
+    # label.destroy()
+    # label2.destroy()
+    # labelb.destroy()
     # try:
     for i in range(len(myentries)):
-        arr.append(int(str(myentries[i].get())))
+        arr.append(int(str(myentries[i].get()))) 
+        luarr.append(int(str(myentries[i].get())))
+    for i in iterappend:
+        i.destroy()   
+    iterappend = []
     if(cb2.get()=='GE with partial pivoting'):
         a,xx = gep.slice(arr)
         
         for i in a:
-            label = Label(tab2,text='[     ').grid(row=8+o,column=p)
+            labelb = Label(tab2,text='[     ').grid(row=8+o,column=p)
+            # iterappend.append(labelb)
             for j in i:
                 print(round(j,3), end = ' ')
                 q = round(j,3)
                 label = Label(tab2,text=(q))
                 label.grid(row=8+o,column=p+1)
+                iterappend.append(label)
                 p+=1
-            label = Label(tab2,text=']').grid(row=8+o,column=p+1)
+            labelb = Label(tab2,text=']').grid(row=8+o,column=p+1)
+            # iterappend.append(labelb)
             p=0
             o+=1
             print()
         for i in range(len(xx)):
             label2 = Label(tab2,text=('x%d= ' % (i+1)+str(int(xx[i]))))
             label2.grid(row=15,column=1+i)
+            iterappend.append(label2)
             print(xx[i])
         o=0
         p=0
@@ -219,26 +243,30 @@ def solve():
         a,xx=ge.slice(n,arr)
         
         for i in a:
-            label = Label(tab2,text='[     ').grid(row=8+o,column=p)
+            labelb = Label(tab2,text='[     ').grid(row=8+o,column=p)
+            # iterappend.append(labelb)
             for j in i:
                 print(round(j,3), end = ' ')
                 q = round(j,3)
                 label = Label(tab2,text=(q))
                 label.grid(row=8+o,column=p+1)
+                iterappend.append(label)
                 p+=1
-            label = Label(tab2,text=']').grid(row=8+o,column=p+1)
+            labelb = Label(tab2,text=']').grid(row=8+o,column=p+1)
+            # iterappend.append(labelb)
             p=0
             o+=1
             print()
         for i in range(len(xx)):
             label2 = Label(tab2,text=('x%d= ' % (i+1)+str(int(xx[i]))))
             label2.grid(row=15,column=1+i)
+            iterappend.append(label2)
             print(xx[i])
         o=0
         p=0
     elif(cb2.get()=='LU decomposition'):
         
-        a,xx,lul=lu.luu(arr)
+        a,xx,lul=lu.luu(luarr)
         print(a)
         print(xx)
         print(lul)
@@ -251,6 +279,7 @@ def solve():
                 q = round(j,3)
                 label = Label(tab2,text=(q))
                 label.grid(row=8+o,column=p+2)
+                iterappend.append(label)
                 p+=1
             label = Label(tab2,text=']').grid(row=8+o,column=p+2)
             p=0
@@ -265,6 +294,7 @@ def solve():
                 q = round(j,3)
                 label = Label(tab2,text=(q))
                 label.grid(row=11+o,column=p+2)
+                iterappend.append(label)
                 p+=1
             label = Label(tab2,text=']').grid(row=11+o,column=p+2)
             p=0
@@ -273,6 +303,7 @@ def solve():
         for i in range(len(xx)):
             label2 = Label(tab2,text=('x%d= ' % (i+1)+str(round(xx[i],3))))
             label2.grid(row=20,column=2+i)
+            # iterappend.append(label2)
             print(xx[i])
         label=Label(tab2,text='--------------------------').grid(row=17,column=2,columnspan=5)
         
@@ -281,14 +312,16 @@ def solve():
     elif(cb2.get()=='Cramer'):
         a,xx=cr.cramer(n,arr)
         for i in a:
-            label = Label(tab2,text='A%d= '%(o+1),font = ('Helvitica',12)).grid(row=8+o,column=p+2)
+            label = Label(tab2,text='A%d= '%(o+1),font = (12)).grid(row=8+o,column=p+2)
             label = Label(tab2,text=i,font = (12)).grid(row=8+o,column=p+3)
+            iterappend.append(label)
             p=0
             o+=1
             print()
         for i in range(len(xx)):
             label2 = Label(tab2,text=('x%d= ' % (i+1)+str(int(xx[i]))),font=(12))
             label2.grid(row=20,column=2+i)
+            iterappend.append(label2)
             print(xx[i])
         o=p=0
     # except:

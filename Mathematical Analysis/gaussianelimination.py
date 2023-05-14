@@ -10,6 +10,7 @@ def slice(mat):
            for elem in length_to_split]
 	gaussianElimination(Output)
 	return gaussianElimination(Output)
+
 # function to get matrix content
 def gaussianElimination(mat):
 	singular_flag = forwardElim(mat)
@@ -25,7 +26,7 @@ def gaussianElimination(mat):
 		return
 
 	backSub(mat)
-	return mat
+	return mat,backSub(mat)
 # function for elementary operation of swapping two rows
 def swap_row(mat, i, j):
 
@@ -99,7 +100,7 @@ def backSub(mat):
 		# divide the RHS by the coefficient of the
 		# unknown being calculated
 		x[i] = (x[i]/mat[i][i])
-
+	return x
 	print("\nSolution for the system:")
 	for i in range(N):
 		print("{:.8f}".format(x[i]))

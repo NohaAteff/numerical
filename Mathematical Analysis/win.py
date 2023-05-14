@@ -1,39 +1,45 @@
-from tkinter import *
-
-import newton as n
-
-window = Tk()
-window.title("Math analysis")
-
-labelfx = Label(window,text="F(x): ").grid(padx=5,row=0,column=1)
-f = Entry(window,width=45)
-f.grid(row=0,column=2,padx=10)
-#drop down menu
-
-labelx0 = Label(window,text="x0: ").grid(row=1,column=1)
-x0 = Entry(window,width=45)
-x0.grid(row=1,column=2)
-
-labele = Label(window,text="e: ").grid(row=2,column=1)
-e = Entry(window,width=45)
-e.grid(row=2,column=2)
-
-labelnn = Label(window,text="N: ").grid(row=3,column=1)
-nn = Entry(window,width=45)
-nn.grid(row=3,column=2)
-
-def root():
-    iterations , x1 = n.newtonRaphson(f.get(),x0.get(),e.get(),nn.get())
-    for i in range(0,len(iterations)):
-        label = Label(window,text=iterations[i])
-        label.grid(row=(5+i),column=2)
-    label = Label(window,text=f"root {x1}")
-    label.grid(row=(7+len(iterations)),column=2)
+import numpy as np
+from scipy.linalg import lu_factor, lu_solve
+from itertools import islice
+# a = np.array([2,1,-1,1,5,2,2,-4,3,1,1,5])
+c = []
+b = []
+k = []
+def matprep(a):
+    c.clear()
+    k.clear()
+    def slice(mat):
+        # list of length in which we have to split
+        length_to_split = [3,1,3,1,3,1]
+        # Using islice
+        matt = iter(mat)
+        Output = [list(islice(matt, elem))
+            for elem in length_to_split] 
+        return Output
+        # print(Output)
+    b = slice(a) 
     
+    for i in slice(a):
+        if len(i) == 1:
+            c.append(i)
+    f=[]   
+    for i in c:
+        b.remove(i)
+        for j in i:
+            f.append(j)
+            
+    for i in b:
+        k.append(i)
+    o = np.array(k)
+    f = np.array(f)
+    
+    def slicee(mat):
+        # list of length in which we have to split
+        length_to_split = [4,4,4]
+        # Using islice
+        matt = iter(mat)
+        Output = [list(islice(matt, elem))
+            for elem in length_to_split] 
         
-
-
-button = Button(window,text="solve",command=root).grid(row=4,column=2)
-
-
-window.mainloop()
+        return Output
+    return o,f,slicee(a)
