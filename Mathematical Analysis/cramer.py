@@ -2,7 +2,7 @@ import numpy as np
 from scipy.linalg import solve
 import win as pr
 def cramer(n,arr):
-    o,f,k=pr.matprep(arr)
+    o,f,a=pr.matprep(arr)
     b1 = np.reshape(f,(3,1))
     a1 = np.asmatrix(o)
     A = []
@@ -21,6 +21,9 @@ def cramer(n,arr):
     for i in A:
         print(i)
     return A,solution
+A,sol = cramer(3,[2,1,-1,1,5,2,2,-4,3,1,1,5])
+print(A)
+print(sol)
 
 
 
