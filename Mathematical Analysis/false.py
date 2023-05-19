@@ -18,13 +18,17 @@ def falsePosition(i,x0,x1,e):
     x2old =0 
 
     if f(x0) * f(x1) < 0.0:
-        step = 1
+        step = 0
         print('\n\n** FALSE POSITION METHOD IMPLEMENTATION **')
         condition = True
         while condition:
             x2 = x0 - (x1-x0) * f(x0)/( f(x1) - f(x0) )
-            print('I-%d,xl=%0.6f,xu=%0.6f ,x2 = %0.6f and f(x2) = %0.6f,|%0.6f' % (step, x0, x1, x2, f(x2),abs((x2-x2old)/x2)*100))
-            iterations.append('i-%d, xl=%0.3f, f(xl)=%0.3f, xu=%0.3f, f(xu)=%0.3f, x2 = %0.3f and f(x2) = %0.3f,|%0.2f' % (step, x0, f(x0), x1, f(x1), x2, f(x2),abs((x2-x2old)/x2)*100))
+            if step == 0:
+                print('Iteration-%d,xl=%0.3f,f(xl)=%0.3f,xu=%0.3f,f(xu)=%0.3f,xr=%0.3f,f(xr) = %0.6f,|E=-' % (step, x0, f(x0), x1, f(x1),x2, f(x2)))
+                iterations.append('i-%d,xl=%0.3f,f(xl)=%0.3f,xu=%0.3f,f(xu)=%0.3f,xr=%0.3f,f(xr) = %0.6f,|E=-' % (step, x0, f(x0), x1, f(x1),x2, f(x2)))
+            else:
+                print('Iteration-%d,xl=%0.3f,f(xl)=%0.3f,xu=%0.3f,f(xu)=%0.3f,xr=%0.3f,f(xr) = %0.6f,|E=%0.6f' % (step, x0, f(x0), x1, f(x1),x2, f(x2),abs((x2-x2old)/x2)*100))
+                iterations.append('i-%d,xl=%0.3f,f(xl)=%0.3f,xu=%0.3f,f(xu)=%0.3f,xr=%0.3f,f(xr) = %0.6f,|E=%0.6f' % (step, x0, f(x0), x1, f(x1),x2, f(x2),abs((x2-x2old)/x2)*100))
             if f(x0) * f(x2) < 0:
                 x1 = x2
             else:

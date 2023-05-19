@@ -21,9 +21,9 @@ def cramer(n,arr):
     for i in A:
         print(i)
     return A,solution
-A,sol = cramer(3,[2,1,-1,1,5,2,2,-4,3,1,1,5])
-print(A)
-print(sol)
+# A,sol = cramer(3,[2,1,-1,1,5,2,2,-4,3,1,1,5])
+# print(A)
+# print(sol)
 
 
 
